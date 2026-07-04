@@ -243,9 +243,20 @@
     updatePetals();
     Garden.companions.refresh();
     Garden.notify.scheduleAll(settings);
+    maybeBackupReminder();
     if (!settings.onboarded) {
       await saveSettings({ onboarded: true });
       setTimeout(() => openAbout(true), 400);
+    }
+  }
+
+  // Gentle, dismissible monthly backup reminder (plan §9 / Wave 6).
+  async function maybeBackupReminder() {
+    const now = Date.now();
+    const last = settings.lastBackupReminder ? new Date(settings.lastBackupReminder).getTime() : 0;
+    if (!last || (now - last) > 30 * 86400000) {
+      await saveSettings({ lastBackupReminder: new Date().toISOString() });
+      banner("It's been a little while. A fresh backup keeps your garden safe — Settings → Export my garden.");
     }
   }
 
@@ -616,6 +627,7 @@
     a.href = url; a.download = "garden-backup-" + new Date().toISOString().slice(0, 10) + ".json";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+    await saveSettings({ lastExport: new Date().toISOString() });
     toast("Backup downloaded. Save it somewhere safe.");
   }
   function doImport() {
