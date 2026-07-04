@@ -100,6 +100,28 @@
     if (c) c.innerHTML = "";
   }
 
+  // Idle sparkles — gentle, occasional, only on calm screens (about + deck).
+  // Respects reduced-motion. (plan §12.1 calm motion)
+  let sparkleTimer = null;
+  function startSparkles() {
+    if (sparkleTimer) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const spawn = () => {
+      const screen = document.querySelector(".screen.active");
+      if (!screen) return;
+      const id = screen.id;
+      if (id !== "about-screen" && id !== "deck-screen") return;
+      const s = document.createElement("span");
+      s.className = "sparkle";
+      s.style.left = (8 + Math.random() * 84) + "vw";
+      s.style.top = (12 + Math.random() * 72) + "vh";
+      s.style.setProperty("--card-hue", String(20 + Math.floor(Math.random() * 300)));
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 2700);
+    };
+    sparkleTimer = setInterval(() => { if (Math.random() < 0.6) spawn(); }, 2600);
+  }
+
   // ---------- PIN / diary ----------
   let pinEntry = "";
 
@@ -246,6 +268,7 @@
     updatePetals();
     Garden.companions.refresh();
     Garden.notify.scheduleAll(settings);
+    startSparkles();
     maybeBackupReminder();
     if (!settings.onboarded) {
       await saveSettings({ onboarded: true });
@@ -404,47 +427,32 @@
   }
 
   // ---------- about ----------
-  // About / onboarding — one soft card at a time (calm, intentional; plan §20.1).
-  let aboutIdx = 0;
+  // About / onboarding — a calm vertical scroll of soft, hue-tinted cards.
+  // No pagination, no "x / 10"; just scroll to the end where Begin sits.
   function openAbout(onboard) {
     show("about-screen");
-    aboutIdx = 0;
-    renderAboutCard(onboard);
-  }
-  function renderAboutCard(onboard) {
     const wrap = $("aboutList"); wrap.innerHTML = "";
     const a = window.GardenContent.about;
-    const sections = a.sections;
-    const i = aboutIdx;
-    const s = sections[i];
-    const isLast = i === sections.length - 1;
-
-    const card = el("div", "about-card");
-    card.appendChild(el("span", "about-pill", "About &middot; " + (i + 1) + " / " + sections.length));
-    card.appendChild(el("h3", "serif", esc(s.title)));
-    if (s.body) card.appendChild(el("p", "about-body", esc(s.body)));
-    if (s.list) { const ul = el("ul", "about-list"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); card.appendChild(ul); }
-    if (s.after) card.appendChild(el("p", "about-after", esc(s.after)));
-    if (isLast) card.appendChild(el("p", "about-close", esc(a.close)));
-    wrap.appendChild(card);
-
-    const nav = el("div", "about-nav");
-    const back = el("button", "ghost", "\u2190 Back");
-    back.type = "button";
-    if (i === 0) back.style.visibility = "hidden";
-    else back.onclick = () => { aboutIdx--; renderAboutCard(onboard); };
-    const dots = el("div", "dots");
-    sections.forEach((_, di) => dots.appendChild(el("span", "dot" + (di === i ? " on" : ""))));
-    const next = el("button", isLast ? "primary" : "", isLast ? (onboard ? "Begin" : "Done") : "Next \u2192");
-    next.type = "button";
-    next.onclick = () => {
-      if (isLast) { show("deck-screen"); renderCurrentCard(); }
-      else { aboutIdx++; renderAboutCard(onboard); }
-    };
-    nav.appendChild(back); nav.appendChild(dots); nav.appendChild(next);
-    wrap.appendChild(nav);
-
-    if (isLast) wrap.appendChild(el("p", "muted small", window.GardenContent.nonAffiliation));
+    a.sections.forEach((s, i) => {
+      const isLast = i === a.sections.length - 1;
+      const card = el("div", "about-card");
+      // Each card gets its own soft hue (plan §20.1 calm, varied garden).
+      card.style.setProperty("--card-hue", String(260 + i * 36));
+      card.appendChild(el("h3", "serif", esc(s.title)));
+      if (s.body) card.appendChild(el("p", "about-body", esc(s.body)));
+      if (s.list) { const ul = el("ul", "about-list"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); card.appendChild(ul); }
+      if (s.after) card.appendChild(el("p", "about-after", esc(s.after)));
+      if (isLast) {
+        card.appendChild(el("p", "about-close", esc(a.close)));
+        const actions = el("div", "about-actions");
+        const begin = el("button", "primary", onboard ? "Begin" : "Done"); begin.type = "button";
+        begin.onclick = () => { show("deck-screen"); renderCurrentCard(); };
+        actions.appendChild(begin);
+        card.appendChild(actions);
+      }
+      wrap.appendChild(card);
+    });
+    wrap.appendChild(el("p", "muted small", window.GardenContent.nonAffiliation));
     window.scrollTo(0, 0);
   }
 
