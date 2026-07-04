@@ -1,0 +1,42 @@
+/* The Garden — shop, inventory, companion ambient, soundscape */
+
+.shop-grid { display: grid; gap: 0.7rem; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.shop-card {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 0.8rem; text-align: center; position: relative; display: grid; gap: 0.4rem;
+}
+.shop-card .new-ribbon {
+  position: absolute; top: 0.4rem; right: 0.4rem; font-size: 0.6rem; letter-spacing: 0.08em;
+  background: var(--rose); color: #1a1018; border-radius: 999px; padding: 0.1rem 0.5rem;
+}
+.shop-card.owned { border-color: var(--accent-soft); }
+.shop-card.equipped { outline: 2px solid var(--accent); }
+.shop-card img, .shop-card svg { width: 64px; height: 64px; margin: 0 auto; }
+.shop-card .name { font-family: var(--font-serif); font-size: 1.05rem; }
+.shop-card .cost { color: var(--gold); font-size: 0.85rem; }
+.shop-card button { width: 100%; min-height: 40px; padding: 0.4rem; font-size: 0.85rem; }
+
+/* Companion ambient */
+.companion-stage { position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+.companion {
+  position: absolute; width: 56px; height: 56px; pointer-events: auto;
+  animation: wander 28s linear infinite;
+  transition: transform 0.4s var(--ease-calm);
+}
+.companion:hover { transform: scale(1.1); }
+.companion .bubble {
+  position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 0.8rem;
+  padding: 0.4rem 0.7rem; font-size: 0.78rem; white-space: nowrap; box-shadow: var(--shadow);
+  opacity: 0; transition: opacity 0.5s var(--ease-calm); max-width: 220px; white-space: normal;
+  width: max-content; max-width: 200px; text-align: center;
+}
+.companion .bubble.show { opacity: 1; }
+@keyframes wander {
+  0% { left: -10%; top: 60%; }
+  50% { left: 50%; top: 30%; }
+  100% { left: 110%; top: 55%; }
+}
+@media (prefers-reduced-motion: reduce) { .companion { animation: none; left: 80%; top: 70%; } }
+
+.soundscape-toggle { font-size: 1.1rem; }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://codersasha.github.io/the-garden/sitemap.xml

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-AU" data-palette="dusk-plum" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Notes.">
+  <meta name="theme-color" content="#160f1f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Notes">
+  <title>Notes</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.svg">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <link rel="stylesheet" href="css/diary.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/print.css">
+  <style>
+    .toast { position: fixed; left: 50%; bottom: calc(var(--safe-bottom) + 5.5rem); transform: translateX(-50%);
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 999px; padding: 0.6rem 1.1rem;
+      box-shadow: var(--shadow); z-index: 50; opacity: 0; transition: opacity .3s var(--ease-calm); pointer-events: none; font-size: 0.9rem; max-width: 90vw; text-align: center; }
+    .toast.show { opacity: 1; }
+    .notify-banner { position: fixed; top: calc(var(--safe-top) + 0.5rem); left: 50%; transform: translateX(-50%);
+      background: var(--bg-elev); border: 1px solid var(--accent); border-radius: var(--radius-sm); padding: 0.7rem 1rem;
+      box-shadow: var(--shadow); z-index: 50; display: none; gap: 0.6rem; align-items: center; max-width: 32rem; }
+    .notify-banner.show { display: flex; }
+    .small { font-size: 0.8rem; }
+    ul { padding-left: 1.2rem; } li { margin: 0.3rem 0; }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Stealth splash -->
+  <div id="splash" class="active" aria-hidden="true">
+    <div class="wordmark">NOTES</div>
+  </div>
+
+  <!-- Diary cover -->
+  <div id="diary-cover">
+    <div class="cover-frame" id="diaryCoverInner"></div>
+  </div>
+
+  <!-- PIN pad -->
+  <div id="pin-pad">
+    <div class="pin-pad-inner">
+      <div class="pin-dots" id="pinDots"></div>
+      <div class="pin-pad-grid" id="pinGrid"></div>
+      <div class="pin-msg" id="pinMsg"></div>
+    </div>
+  </div>
+
+  <!-- App header -->
+  <header class="app-header" id="appHeader"></header>
+
+  <!-- Screens -->
+  <main>
+    <section id="deck-screen" class="screen active">
+      <div class="shell">
+        <div id="deck">
+          <div id="cardHolder"></div>
+        </div>
+        <div class="deck-controls" id="deckControls">
+          <button type="button" onclick="Garden.app.restoreAll()">Bring them all back</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="ledger-screen" class="screen">
+      <div class="shell" id="ledgerList"></div>
+    </section>
+
+    <section id="saved-screen" class="screen">
+      <div class="shell" id="savedList"></div>
+    </section>
+
+    <section id="browse-screen" class="screen">
+      <div class="shell" id="browseList"></div>
+    </section>
+
+    <section id="shop-screen" class="screen">
+      <div class="shell" id="shopList"></div>
+    </section>
+
+    <section id="about-screen" class="screen">
+      <div class="shell" id="aboutList"></div>
+    </section>
+
+    <section id="settings-screen" class="screen">
+      <div class="shell" id="settingsList"></div>
+    </section>
+
+    <section id="letter-screen" class="screen">
+      <div class="shell" id="letterList"></div>
+    </section>
+
+    <section id="biff-screen" class="screen">
+      <div class="shell" id="biffList"></div>
+    </section>
+  </main>
+
+  <!-- Crisis footer (persistent, never dismissible) -->
+  <div class="crisis-footer" id="crisisFooter"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="sheet" id="modalSheet"></div>
+  </div>
+
+  <!-- Content seeds (JS globals, plan §9.2) -->
+  <script src="js/content/affirmations.js"></script>
+  <script src="js/content/wisdom.js"></script>
+  <script src="js/content/victory-presets.js"></script>
+  <script src="js/content/bingo-squares.js"></script>
+  <script src="js/content/biff-styles.js"></script>
+  <script src="js/content/letter-structure.js"></script>
+  <script src="js/content/resources.js"></script>
+  <script src="js/content/about.js"></script>
+  <script src="js/content/small-pleasures.js"></script>
+  <script src="js/content/grounding-links.js"></script>
+  <script src="js/content/catalogue.js"></script>
+
+  <!-- Core modules (classic scripts, dependency order) -->
+  <script src="js/db.js"></script>
+  <script src="js/migrations.js"></script>
+  <script src="js/crypto.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/companions.js"></script>
+  <script src="js/notify.js"></script>
+  <script src="js/deck.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/ledger.js"></script>
+  <script src="js/breathe.js"></script>
+  <script src="js/biff.js"></script>
+  <script src="js/sw-register.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

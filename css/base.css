@@ -1,0 +1,149 @@
+/* The Garden — base reset, typography, layout, header, buttons, footer, screens */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  line-height: 1.5;
+  font-size: 1rem;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ambient background drift (stilled under reduced-motion) */
+.bg-glow {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% -5%, var(--accent-glow), transparent),
+    radial-gradient(ellipse 55% 40% at 85% 15%, var(--accent-glow), transparent),
+    radial-gradient(ellipse 50% 35% at 50% 100%, var(--accent-glow), transparent);
+  animation: drift 30s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  0% { transform: translate3d(0,0,0) scale(1); }
+  100% { transform: translate3d(0,-2%,0) scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) { .bg-glow { animation: none; } }
+
+h1, h2, h3, .serif { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+button {
+  font-family: var(--font-ui); font-weight: 500; cursor: pointer;
+  border: 1px solid var(--border); background: var(--bg-elev); color: var(--text);
+  padding: 0.7rem 1.2rem; border-radius: 999px; min-height: var(--tap);
+  touch-action: manipulation; transition: transform .2s var(--ease-calm), background .2s, border-color .2s;
+}
+button:hover { border-color: var(--accent-soft); }
+button:active { transform: translateY(1px); }
+button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button.primary {
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent));
+  border-color: transparent; color: var(--bg);
+}
+button.ghost { background: transparent; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+a { color: var(--accent); }
+
+textarea, input[type="text"], input[type="password"], input[type="tel"], input[type="number"], select {
+  width: 100%; background: var(--bg-cell); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.75rem 0.9rem; color: var(--text);
+  min-height: var(--tap); touch-action: manipulation;
+}
+textarea { line-height: 1.5; resize: vertical; }
+
+.screen { display: none; position: relative; z-index: 1; }
+.screen.active { display: block; animation: fadeIn var(--dur-fade) var(--ease-calm); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.shell {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: calc(var(--safe-top) + 1rem) 1.1rem calc(var(--safe-bottom) + 5.5rem);
+  position: relative; z-index: 1;
+}
+
+/* Header */
+.app-header {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: calc(var(--safe-top) + 0.4rem) 1.1rem 0.4rem;
+  background: linear-gradient(var(--bg) 60%, transparent);
+  max-width: var(--maxw); margin: 0 auto;
+}
+.app-header .brand { font-family: var(--font-serif); font-size: 1.15rem; flex: 1; }
+.app-header .icon-btn {
+  min-width: var(--tap); min-height: var(--tap); border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid transparent; font-size: 1.2rem;
+}
+.app-header .petals {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.9rem; color: var(--gold); font-weight: 500;
+}
+
+/* Crisis footer — persistent, never dismissible */
+.crisis-footer {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  padding: 0.5rem 1rem calc(var(--safe-bottom) + 0.5rem);
+  background: linear-gradient(transparent, var(--bg) 35%);
+}
+.crisis-footer button {
+  width: 100%; background: linear-gradient(135deg, var(--rose), var(--accent-soft));
+  color: #1a1018; border: none; font-weight: 600; border-radius: 999px;
+  min-height: var(--tap); box-shadow: var(--shadow);
+}
+
+/* Modal */
+.modal {
+  position: fixed; inset: 0; z-index: 40; display: none;
+  background: rgba(10,8,16,0.55); backdrop-filter: blur(2px);
+  align-items: center; justify-content: center; padding: 1rem;
+}
+.modal.open { display: flex; animation: fadeIn var(--dur-fade) var(--ease-calm); }
+.modal .sheet {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius);
+  max-width: 32rem; width: 100%; max-height: 85dvh; overflow: auto;
+  padding: 1.25rem; box-shadow: var(--shadow);
+}
+.modal h2 { margin-bottom: 0.5rem; }
+.modal .close { float: right; }
+
+/* Menu */
+.menu-list { list-style: none; display: grid; gap: 0.4rem; margin-top: 0.5rem; }
+.menu-list button {
+  width: 100%; text-align: left; background: var(--bg-cell); border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1rem;
+}
+
+/* Lists (ledger, browse, shop) */
+.list { display: grid; gap: 0.6rem; }
+.list .item {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 0.9rem 1rem;
+}
+.list .item .meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem; }
+.empty { color: var(--text-muted); font-style: italic; padding: 2rem 0; text-align: center; }
+
+.tag { font-size: 0.7rem; color: var(--accent); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.15rem 0.6rem; display: inline-block; }
+
+.section-title { font-size: 1.6rem; margin: 0.5rem 0 0.8rem; }
+.muted { color: var(--text-muted); }
+.row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+.row > * { flex: 1; }
+.spacer { height: 1rem; }
+
+/* Laptop cap — keep intimate card scale (plan §12.2) */
+@media (min-width: 720px) {
+  body { font-size: 1.02rem; }
+}

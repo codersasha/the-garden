@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mum Survivor Bingo — Parental Alienation & Family Court (AU)</title>
+  <meta name="description" content="A solidarity bingo card for Australian mums navigating parental alienation, domestic violence, coercive control, and the family law system.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #1a1424;
+      --bg-card: #241c32;
+      --bg-cell: #2e2438;
+      --bg-cell-marked: #4a2f5c;
+      --accent: #d4a5e8;
+      --accent-soft: #b87fd4;
+      --accent-glow: rgba(212, 165, 232, 0.35);
+      --gold: #e8c97a;
+      --gold-soft: rgba(232, 201, 122, 0.2);
+      --text: #f5eef8;
+      --text-muted: #b8a8c4;
+      --border: rgba(212, 165, 232, 0.18);
+      --success: #7dd4a8;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(184, 127, 212, 0.22), transparent),
+        radial-gradient(ellipse 60% 40% at 90% 20%, rgba(232, 201, 122, 0.12), transparent),
+        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(125, 212, 168, 0.08), transparent);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    .nav-cards {
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav-cards a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .nav-cards a:hover {
+      color: var(--text);
+      border-color: var(--accent-soft);
+    }
+
+    .nav-cards a.active {
+      background: linear-gradient(135deg, var(--accent-soft), #8b5aab);
+      border-color: transparent;
+      color: #1a1424;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-soft);
+      border: 1px solid rgba(232, 201, 122, 0.35);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 34rem;
+      margin: 0 auto 1.25rem;
+    }
+
+    .intro {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin: 2rem 0 1.5rem;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      padding: 0.65rem 1.15rem;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent-soft);
+      background: var(--bg-cell);
+      transform: translateY(-1px);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--accent-soft), #8b5aab);
+      border-color: transparent;
+      color: #1a1424;
+    }
+
+    button.primary:hover {
+      box-shadow: 0 8px 28px var(--accent-glow);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .bingo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bingo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212, 165, 232, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .bingo-header {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .bingo-header span {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      min-height: 0;
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.55rem;
+      font-size: clamp(0.62rem, 1.8vw, 0.78rem);
+      font-weight: 400;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .cell:hover:not(.free) {
+      border-color: var(--accent-soft);
+      background: #362a42;
+    }
+
+    .cell.marked {
+      background: var(--bg-cell-marked);
+      border-color: var(--accent-soft);
+      color: var(--text);
+    }
+
+    .cell.marked::after {
+      content: '✓';
+      position: absolute;
+      top: 0.2rem;
+      right: 0.35rem;
+      font-size: 0.65rem;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .cell.free {
+      background: linear-gradient(145deg, #3d2a52, #2a1f38);
+      border-color: var(--gold);
+      cursor: default;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.75rem, 2vw, 0.95rem);
+      font-weight: 600;
+      color: var(--gold);
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .cell.free .heart {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .cell.bingo-line {
+      animation: pulse 1.2s ease infinite;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
+      50% { box-shadow: 0 0 28px var(--accent-glow); }
+    }
+
+    .win-banner {
+      display: none;
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, rgba(125, 212, 168, 0.15), rgba(212, 165, 232, 0.15));
+      border: 1px solid rgba(125, 212, 168, 0.4);
+      border-radius: 1rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .win-banner.visible {
+      display: block;
+    }
+
+    .win-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--success);
+      margin-bottom: 0.35rem;
+    }
+
+    .win-banner p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .resources {
+      margin-top: 3rem;
+      padding: 1.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+    }
+
+    .resources h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent);
+    }
+
+    .resources p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .resource-list {
+      list-style: none;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .resource-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      background: var(--bg-cell);
+      border: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .resource-list a:hover {
+      border-color: var(--accent-soft);
+    }
+
+    .resource-list .num {
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    footer em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem 0.75rem 3rem;
+      }
+
+      .bingo-card {
+        padding: 0.75rem;
+      }
+
+      .cell {
+        padding: 0.35rem;
+        font-size: 0.58rem;
+      }
+
+      .bingo-header span {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .bg-glow, .controls, .stats, .resources, footer, .win-banner, .nav-cards {
+        display: none !important;
+      }
+
+      .bingo-card {
+        box-shadow: none;
+        border: 2px solid #333;
+      }
+
+      .cell {
+        border: 1px solid #999;
+        background: white;
+        color: black;
+      }
+
+      .cell.marked::after {
+        color: #333;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="container">
+    <nav class="nav-cards" aria-label="Bingo cards">
+      <a href="index.html" class="active">Mum Survivor Bingo</a>
+      <a href="love-ledger.html">The Love Ledger</a>
+    </nav>
+
+    <header>
+      <div class="badge">Australia · Family Law Edition</div>
+      <h1>Mum Survivor Bingo</h1>
+      <p class="subtitle">
+        For mums who've lived through domestic violence, coercive control, and parental alienation — and still show up for their kids in a system that often doesn't show up for them.
+      </p>
+      <p class="intro">
+        Tap a square when it hits too close to home. This isn't a game you wanted to win — it's proof you're not alone.
+      </p>
+    </header>
+
+    <div class="controls">
+      <button type="button" class="primary" id="shuffleBtn">Shuffle card</button>
+      <button type="button" id="clearBtn">Clear marks</button>
+      <button type="button" id="printBtn">Print</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="markedCount">0</div>
+        <div class="stat-label">Marked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="bingoCount">0</div>
+        <div class="stat-label">Bingo lines</div>
+      </div>
+    </div>
+
+    <div class="bingo-card">
+      <div class="bingo-header" aria-hidden="true">
+        <span>M</span><span>U</span><span>M</span><span>S</span><span>!</span>
+      </div>
+      <div class="bingo-grid" id="bingoGrid" role="grid" aria-label="Mum Survivor Bingo card"></div>
+    </div>
+
+    <div class="win-banner" id="winBanner" role="status">
+      <h2>Bingo.</h2>
+      <p>You've collected a full row of experiences no one should have to endure. You're seen. You're not crazy. And you're still here.</p>
+    </div>
+
+    <section class="resources">
+      <h2>If you need support right now</h2>
+      <p>You don't have to navigate this alone. These Australian services are confidential and available 24/7 where noted.</p>
+      <ul class="resource-list">
+        <li>
+          <a href="tel:1800737732">
+            <span class="num">1800 737 732</span>
+            <span>1800RESPECT — National sexual assault, domestic &amp; family violence counselling (24/7)</span>
+          </a>
+        </li>
+        <li>
+          <a href="tel:131114">
+            <span class="num">13 11 14</span>
+            <span>Lifeline — Crisis support &amp; suicide prevention (24/7)</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.legalaid.vic.gov.au/" target="_blank" rel="noopener">
+            <span class="num">Legal Aid</span>
+            <span>Legal Aid in your state/territory — family law advice &amp; representation</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.fcfcoa.gov.au/" target="_blank" rel="noopener">
+            <span class="num">FCFCOA</span>
+            <span>Federal Circuit and Family Court of Australia — forms, resources &amp; safety info</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.dvconnect.org/" target="_blank" rel="noopener">
+            <span class="num">DV Connect</span>
+            <span>Queensland — DV helpline &amp; refuge support (other states have equivalent services)</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      Made with solidarity for mums fighting to be in their children's lives. <em>You are not the villain in this story.</em> · <a href="love-ledger.html">The Love Ledger</a>
+    </footer>
+  </div>
+
+  <script>
+    const SQUARES = [
+      "Family report says dad is 'protective' despite your AVO",
+      "ICL hasn't met your child yet",
+      "Accused of 'parental alienation' for asking about school",
+      "Kids parrot dad's phrases word-for-word",
+      "Handover at a police station carpark",
+      "Court adjourned. Again.",
+      "Ex breaches parenting orders — no consequence",
+      "You get enforcement action for one missed call",
+      "FDR mediator: 'You just need to communicate better'",
+      "Supervised visits — that you pay for",
+      "Child refuses contact — court blames you",
+      "His lawyer costs more than your annual rent",
+      "Legal Aid funding runs out mid-case",
+      "School calls dad first despite your orders",
+      "Ex posts 'happy family' pics while you haven't seen the kids in months",
+      "Police: 'That's a family law matter'",
+      "65DAA lawyer letter lands at 5pm Friday",
+      "Psychologist report funded entirely by his side",
+      "Gatekeeping label for setting basic boundaries",
+      "He told the kids you're 'unstable' or 'dangerous'",
+      "Medical info withheld — 'privacy'",
+      "'Best interests of the child' cited against you",
+      "Email asking about homework = 'harassment'",
+      "Changeover anxiety every single week",
+      "Document everything — you already have 47 folders",
+      "Kids return repeating his version of events",
+      "Centrelink questions you while he hides income",
+      "His new partner is now 'primary carer'",
+      "Court accepts child's wishes after 18 months of alienation",
+      "Safe Steps / DV helpline becomes your second home",
+      "Ex uses child support as a weapon",
+      "Family report writer spoke to him twice, you once",
+      "You cry in the car after every court date",
+      "Support group nod — they all know that look",
+      "Mention coercive control — blank stares in the courtroom"
+    ];
+
+    const FREE_SPACE = { text: "Still fighting\nfor your kids", isFree: true };
+
+    let currentSquares = [];
+    let marked = new Set();
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function generateCard() {
+      const picked = shuffle(SQUARES).slice(0, 24);
+      currentSquares = [];
+      let idx = 0;
+      for (let i = 0; i < 25; i++) {
+        if (i === 12) {
+          currentSquares.push(FREE_SPACE);
+        } else {
+          currentSquares.push({ text: picked[idx++], isFree: false });
+        }
+      }
+      marked = new Set([12]);
+      render();
+    }
+
+    function render() {
+      const grid = document.getElementById('bingoGrid');
+      grid.innerHTML = '';
+
+      currentSquares.forEach((sq, i) => {
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cell' + (sq.isFree ? ' free' : '') + (marked.has(i) ? ' marked' : '');
+        cell.setAttribute('role', 'gridcell');
+        cell.dataset.index = i;
+
+        if (sq.isFree) {
+          cell.innerHTML = '<span class="heart">💜</span><span>' + sq.text.replace('\n', '<br>') + '</span>';
+          cell.setAttribute('aria-label', 'Free space: Still fighting for your kids');
+        } else {
+          cell.textContent = sq.text;
+          cell.addEventListener('click', () => toggleMark(i));
+        }
+
+        grid.appendChild(cell);
+      });
+
+      updateStats();
+      checkBingo();
+    }
+
+    function toggleMark(i) {
+      if (currentSquares[i].isFree) return;
+      if (marked.has(i)) {
+        marked.delete(i);
+      } else {
+        marked.add(i);
+      }
+      render();
+    }
+
+    function getLines() {
+      const lines = [];
+      for (let r = 0; r < 5; r++) {
+        lines.push([0, 1, 2, 3, 4].map(c => r * 5 + c));
+      }
+      for (let c = 0; c < 5; c++) {
+        lines.push([0, 1, 2, 3, 4].map(r => r * 5 + c));
+      }
+      lines.push([0, 6, 12, 18, 24]);
+      lines.push([4, 8, 12, 16, 20]);
+      return lines;
+    }
+
+    function checkBingo() {
+      const lines = getLines();
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(c => c.classList.remove('bingo-line'));
+
+      let bingoLines = 0;
+      lines.forEach(line => {
+        if (line.every(i => marked.has(i))) {
+          bingoLines++;
+          line.forEach(i => cells[i]?.classList.add('bingo-line'));
+        }
+      });
+
+      document.getElementById('bingoCount').textContent = bingoLines;
+      document.getElementById('winBanner').classList.toggle('visible', bingoLines > 0);
+    }
+
+    function updateStats() {
+      const count = [...marked].filter(i => !currentSquares[i]?.isFree).length;
+      document.getElementById('markedCount').textContent = count;
+    }
+
+    document.getElementById('shuffleBtn').addEventListener('click', generateCard);
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      marked = new Set([12]);
+      render();
+    });
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    generateCard();
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Garden — How backups work</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 42rem; margin: 0 auto; padding: 2rem 1.2rem 4rem; line-height: 1.6; color: #2a2230; background: #faf7fb; }
+  h1 { font-size: 1.8rem; } h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  ol { padding-left: 1.3rem; } a { color: #6a4ba6; } .back { display:inline-block; margin-top:2rem; }
+</style>
+</head>
+<body>
+  <h1>How backups work</h1>
+  <p>Because everything lives on your device, losing or breaking your phone means losing your ledger unless you've made a backup. A monthly backup is a good rhythm. The app gives you a gentle, dismissible reminder each month.</p>
+
+  <h2>To back up</h2>
+  <ol>
+    <li>Open the app → Settings → <strong>Export my garden</strong>.</li>
+    <li>A file called <code>garden-backup-YYYY-MM-DD.json</code> downloads.</li>
+    <li>Save it somewhere safe: email it to yourself, or put it in iCloud / Google Drive.</li>
+  </ol>
+  <p>The backup excludes your PIN hash by default, so the file alone can't unlock your diary.</p>
+
+  <h2>To restore (same phone or a new one)</h2>
+  <ol>
+    <li>Install/open The Garden on the new device and set a PIN.</li>
+    <li>Settings → <strong>Restore from backup</strong> → pick your saved <code>.json</code> file.</li>
+    <li>Choose to merge with any existing data, or replace it entirely.</li>
+  </ol>
+  <p>Your letters, memories, ledger, inventory, petals and settings come back exactly as they were.</p>
+
+  <p class="back"><a href="../index.html">← Back to The Garden</a></p>
+</body>
+</html>

@@ -1,0 +1,157 @@
+/* The Garden — design tokens. Palettes, light/dark, motion, safe areas.
+   Palettes are contrast-verified (see plan §12.2). New palettes ship via the shop. */
+
+:root {
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-ui: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-flip: 500ms;
+  --dur-open: 700ms;
+  --dur-fade: 250ms;
+  --radius: 1.25rem;
+  --radius-sm: 0.75rem;
+  --tap: 44px;
+  --maxw: 720px;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+
+  --petal: #e8d4a8;
+}
+
+/* Default palette: Dusk Plum (dark) */
+:root,
+[data-palette="dusk-plum"] {
+  --bg: #160f1f;
+  --bg-elev: #1f1630;
+  --bg-cell: #281c3d;
+  --accent: #c9a7ff;
+  --accent-soft: #a987e0;
+  --accent-glow: rgba(201, 167, 255, 0.30);
+  --rose: #e8b4b8;
+  --gold: #e8d4a8;
+  --text: #f3eefc;
+  --text-muted: #b6a8cf;
+  --border: rgba(201, 167, 255, 0.22);
+  --success: #c8e6a0;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+[data-palette="dusk-plum"][data-theme="light"] {
+  --bg: #f6f1fb;
+  --bg-elev: #ffffff;
+  --bg-cell: #efe6fb;
+  --accent: #6a4ba6;
+  --accent-soft: #8a6dc0;
+  --accent-glow: rgba(106, 75, 166, 0.22);
+  --rose: #b5606a;
+  --gold: #9a7a3a;
+  --text: #2a1f3d;
+  --text-muted: #5f5379;
+  --border: rgba(106, 75, 166, 0.20);
+  --shadow: 0 18px 60px rgba(80, 60, 120, 0.18);
+}
+
+[data-palette="forest-teal"] {
+  --bg: #141f1c;
+  --bg-elev: #1c2a26;
+  --bg-cell: #243530;
+  --accent: #a8d4c4;
+  --accent-soft: #7fbfa8;
+  --accent-glow: rgba(168, 212, 196, 0.35);
+  --rose: #e8b4b8;
+  --gold: #e8d4a8;
+  --text: #f0f7f4;
+  --text-muted: #a8bdb4;
+  --border: rgba(168, 212, 196, 0.2);
+  --success: #c8e6a0;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+[data-palette="forest-teal"][data-theme="light"] {
+  --bg: #eef5f1;
+  --bg-elev: #ffffff;
+  --bg-cell: #e0ece6;
+  --accent: #2f6a55;
+  --accent-soft: #4a8a72;
+  --accent-glow: rgba(47, 106, 85, 0.22);
+  --rose: #b5606a;
+  --gold: #9a7a3a;
+  --text: #1c2a26;
+  --text-muted: #4d6359;
+  --border: rgba(47, 106, 85, 0.2);
+  --shadow: 0 18px 60px rgba(20, 40, 35, 0.18);
+}
+
+[data-palette="morning-mist"] {
+  --bg: #f7f1f3;
+  --bg-elev: #fffafc;
+  --bg-cell: #f1e6ec;
+  --accent: #b5606a;
+  --accent-soft: #cf8088;
+  --accent-glow: rgba(181, 96, 106, 0.20);
+  --rose: #d98a9a;
+  --gold: #c79a55;
+  --text: #3a2a30;
+  --text-muted: #7a5f68;
+  --border: rgba(181, 96, 106, 0.20);
+  --success: #6a9a7a;
+  --shadow: 0 18px 60px rgba(120, 80, 95, 0.16);
+}
+[data-palette="morning-mist"][data-theme="dark"] {
+  --bg: #2a1f24;
+  --bg-elev: #362a30;
+  --bg-cell: #43353c;
+  --accent: #e0a8b0;
+  --accent-soft: #c98a93;
+  --accent-glow: rgba(224, 168, 176, 0.28);
+  --rose: #e8b4b8;
+  --gold: #e8d4a8;
+  --text: #f6eef0;
+  --text-muted: #c9b0b8;
+  --border: rgba(224, 168, 176, 0.22);
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+[data-palette="lantern-gold"] {
+  --bg: #1c160e;
+  --bg-elev: #2a2114;
+  --bg-cell: #382c1a;
+  --accent: #f0c870;
+  --accent-soft: #d9a94a;
+  --accent-glow: rgba(240, 200, 112, 0.32);
+  --rose: #e8b4b8;
+  --gold: #f0c870;
+  --text: #fbf2dc;
+  --text-muted: #c9b890;
+  --border: rgba(240, 200, 112, 0.22);
+  --success: #c8e6a0;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+[data-palette="lantern-gold"][data-theme="light"] {
+  --bg: #fbf4e2;
+  --bg-elev: #fffdf3;
+  --bg-cell: #f3e8c8;
+  --accent: #8a6a2a;
+  --accent-soft: #a98840;
+  --accent-glow: rgba(138, 106, 42, 0.22);
+  --rose: #b5606a;
+  --gold: #8a6a2a;
+  --text: #2a2114;
+  --text-muted: #6a5a3a;
+  --border: rgba(138, 106, 42, 0.2);
+  --shadow: 0 18px 60px rgba(80, 60, 20, 0.16);
+}
+
+/* Neutral stealth palette (splash / OS) */
+:root {
+  --stealth-bg: #e9e9ec;
+  --stealth-fg: #3a3a40;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-flip: 1ms;
+    --dur-open: 1ms;
+    --dur-fade: 1ms;
+  }
+}

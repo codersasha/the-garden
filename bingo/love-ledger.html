@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Love Ledger — Quiet Victories Bingo (AU)</title>
+  <meta name="description" content="A bingo card for the quiet, unseen things Australian mums do for their kids, themselves, and each other — even when no one applauds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #141f1c;
+      --bg-card: #1c2a26;
+      --bg-cell: #243530;
+      --bg-cell-marked: #2f4a42;
+      --accent: #a8d4c4;
+      --accent-soft: #7fbfa8;
+      --accent-glow: rgba(168, 212, 196, 0.35);
+      --rose: #e8b4b8;
+      --rose-soft: rgba(232, 180, 184, 0.18);
+      --gold: #e8d4a8;
+      --gold-soft: rgba(232, 212, 168, 0.18);
+      --text: #f0f7f4;
+      --text-muted: #a8bdb4;
+      --border: rgba(168, 212, 196, 0.2);
+      --success: #c8e6a0;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% -5%, rgba(127, 191, 168, 0.2), transparent),
+        radial-gradient(ellipse 55% 40% at 85% 15%, rgba(232, 180, 184, 0.14), transparent),
+        radial-gradient(ellipse 50% 35% at 50% 100%, rgba(232, 212, 168, 0.1), transparent);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    .nav-cards {
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav-cards a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .nav-cards a:hover {
+      color: var(--text);
+      border-color: var(--accent-soft);
+    }
+
+    .nav-cards a.active {
+      background: linear-gradient(135deg, var(--accent-soft), #4a8a72);
+      border-color: transparent;
+      color: #141f1c;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose);
+      background: var(--rose-soft);
+      border: 1px solid rgba(232, 180, 184, 0.35);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 55%, var(--rose) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin: 0 auto 1.25rem;
+    }
+
+    .intro {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 38rem;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    .diary-note {
+      margin: 1.5rem auto 0;
+      max-width: 34rem;
+      padding: 1rem 1.25rem;
+      background: var(--gold-soft);
+      border: 1px solid rgba(232, 212, 168, 0.3);
+      border-radius: 0.85rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      text-align: left;
+    }
+
+    .diary-note strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin: 2rem 0 1.5rem;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      padding: 0.65rem 1.15rem;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent-soft);
+      background: var(--bg-cell);
+      transform: translateY(-1px);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--accent-soft), #4a8a72);
+      border-color: transparent;
+      color: #141f1c;
+    }
+
+    button.primary:hover {
+      box-shadow: 0 8px 28px var(--accent-glow);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .bingo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bingo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(168, 212, 196, 0.07) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .bingo-header {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .bingo-header span {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--rose);
+      letter-spacing: 0.05em;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      min-height: 0;
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.55rem;
+      font-size: clamp(0.62rem, 1.8vw, 0.78rem);
+      font-weight: 400;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .cell:hover:not(.free) {
+      border-color: var(--accent-soft);
+      background: #2d4038;
+    }
+
+    .cell.marked {
+      background: var(--bg-cell-marked);
+      border-color: var(--accent-soft);
+      color: var(--text);
+    }
+
+    .cell.marked::after {
+      content: '✓';
+      position: absolute;
+      top: 0.2rem;
+      right: 0.35rem;
+      font-size: 0.65rem;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .cell.free {
+      background: linear-gradient(145deg, #2f4a42, #243530);
+      border-color: var(--gold);
+      cursor: default;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.75rem, 2vw, 0.95rem);
+      font-weight: 600;
+      color: var(--gold);
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .cell.free .heart {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .cell.bingo-line {
+      animation: pulse 1.2s ease infinite;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
+      50% { box-shadow: 0 0 28px var(--accent-glow); }
+    }
+
+    .win-banner {
+      display: none;
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, rgba(168, 212, 196, 0.15), rgba(232, 180, 184, 0.12));
+      border: 1px solid rgba(168, 212, 196, 0.4);
+      border-radius: 1rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .win-banner.visible {
+      display: block;
+    }
+
+    .win-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--success);
+      margin-bottom: 0.35rem;
+    }
+
+    .win-banner p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .categories {
+      margin-top: 2.5rem;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .category {
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+    }
+
+    .category h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .category p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    footer em {
+      color: var(--rose);
+      font-style: normal;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem 0.75rem 3rem;
+      }
+
+      .bingo-card {
+        padding: 0.75rem;
+      }
+
+      .cell {
+        padding: 0.35rem;
+        font-size: 0.58rem;
+      }
+
+      .bingo-header span {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .bg-glow, .controls, .stats, .categories, footer, .win-banner, .nav-cards, .diary-note {
+        display: none !important;
+      }
+
+      .bingo-card {
+        box-shadow: none;
+        border: 2px solid #333;
+      }
+
+      .cell {
+        border: 1px solid #999;
+        background: white;
+        color: black;
+      }
+
+      .cell.marked::after {
+        color: #333;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="container">
+    <nav class="nav-cards" aria-label="Bingo cards">
+      <a href="index.html">Mum Survivor Bingo</a>
+      <a href="love-ledger.html" class="active">The Love Ledger</a>
+    </nav>
+
+    <header>
+      <div class="badge">Quiet victories · Australia</div>
+      <h1>The Love Ledger</h1>
+      <p class="subtitle">
+        For the things you do for your kids, yourself, and each other — the small brave acts that rarely make the court file, but absolutely count.
+      </p>
+      <p class="intro">
+        Tap a square when you've done it. Like the diary from your course: notice what you're already doing. It's more than you think.
+      </p>
+      <div class="diary-note">
+        <strong>Course reminder:</strong> Keep a connection diary — letters, thoughts, school updates, moments of love sent out into the world. On hard days, read it back. The ledger is evidence that you never stopped being their mum.
+      </div>
+    </header>
+
+    <div class="controls">
+      <button type="button" class="primary" id="shuffleBtn">Shuffle card</button>
+      <button type="button" id="clearBtn">Clear marks</button>
+      <button type="button" id="printBtn">Print</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="markedCount">0</div>
+        <div class="stat-label">Logged today</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="bingoCount">0</div>
+        <div class="stat-label">Full rows</div>
+      </div>
+    </div>
+
+    <div class="bingo-card">
+      <div class="bingo-header" aria-hidden="true">
+        <span>L</span><span>O</span><span>V</span><span>E</span><span>!</span>
+      </div>
+      <div class="bingo-grid" id="bingoGrid" role="grid" aria-label="The Love Ledger bingo card"></div>
+    </div>
+
+    <div class="win-banner" id="winBanner" role="status">
+      <h2>Look at that row.</h2>
+      <p>None of this was wasted. You showed up — for them, for you, for another mum. Write it in your diary tonight. You earned this.</p>
+    </div>
+
+    <section class="categories" aria-label="What counts">
+      <div class="category">
+        <h3>For your kids</h3>
+        <p>Letters, school liaison, research into what they love, prayers at bedtime, showing up when it's hard, BIFF replies, make-up time negotiated in good faith — love in action, seen or unseen.</p>
+      </div>
+      <div class="category">
+        <h3>For yourself</h3>
+        <p>Counselling, rest, movement, hobbies, friendship, boundaries — you can't pour from an empty cup, and healing is part of staying in the fight.</p>
+      </div>
+      <div class="category">
+        <h3>For each other</h3>
+        <p>The nod in the support group, the resource shared, the message that says "me too" — solidarity is survival, and you're part of something bigger.</p>
+      </div>
+    </section>
+
+    <footer>
+      Easy to forget. Hard to undo. <em>What you do still matters.</em> · <a href="index.html">Mum Survivor Bingo</a>
+    </footer>
+  </div>
+
+  <script>
+    const SQUARES = [
+      "Wrote a letter to your kids — kept safe for when they're ready",
+      "Logged an entry in your connection diary",
+      "Liaised with school about something that matters",
+      "Spoke with a counsellor about your child's wellbeing",
+      "Created social media your kids might find you on someday",
+      "Researched something they're into — just to feel closer",
+      "Sent a prayer, thought, or wish to them before sleep",
+      "Responded to a hostile email in BIFF style",
+      "Negotiated make-up time in good faith",
+      "Agreed to supervised visits to keep the door open",
+      "Showed love when faced with difficult behaviour",
+      "Turned up to an event even when you were shamed",
+      "Corrected a professional's false narrative — calmly, in writing",
+      "Didn't rise to the bait this time",
+      "Saved a birthday message they'll read one day",
+      "Attended handover when every part of you wanted to hide",
+      "Asked the ICL something constructive about your child",
+      "Left a trail — updated contact details, hope intact",
+      "Remembered a detail only a mum would know",
+      "Celebrated their birthday quietly, but fully",
+      "Recorded a voice message for the future",
+      "Maintained boundaries without abandoning connection",
+      "Checked in with another mum who gets it",
+      "Shared a tip or resource in the group",
+      "Listened to someone without trying to fix them",
+      "Sent a 🤍 to a mum having a hard day",
+      "Showed up to a course session — even exhausted",
+      "Saw your counsellor this week",
+      "Had coffee with a friend who sees you",
+      "Went for a walk when grief hit hard",
+      "Started a hobby that's just for you",
+      "Slept when your body needed it — guilt-free",
+      "Let yourself laugh today",
+      "Journalled without editing yourself",
+      "Said no to something that drained you",
+      "Cried, then got back up",
+      "Read something that helped you breathe",
+      "Moved your body — gently counts",
+      "Made yourself a proper meal",
+      "Sat in nature for ten minutes",
+      "Named one thing you're proud of today",
+      "Forgave yourself for not being perfect"
+    ];
+
+    const FREE_SPACE = { text: "Love never\nstopped 🤍", isFree: true };
+
+    let currentSquares = [];
+    let marked = new Set();
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function generateCard() {
+      const picked = shuffle(SQUARES).slice(0, 24);
+      currentSquares = [];
+      let idx = 0;
+      for (let i = 0; i < 25; i++) {
+        if (i === 12) {
+          currentSquares.push(FREE_SPACE);
+        } else {
+          currentSquares.push({ text: picked[idx++], isFree: false });
+        }
+      }
+      marked = new Set([12]);
+      render();
+    }
+
+    function render() {
+      const grid = document.getElementById('bingoGrid');
+      grid.innerHTML = '';
+
+      currentSquares.forEach((sq, i) => {
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cell' + (sq.isFree ? ' free' : '') + (marked.has(i) ? ' marked' : '');
+        cell.setAttribute('role', 'gridcell');
+        cell.dataset.index = i;
+
+        if (sq.isFree) {
+          cell.innerHTML = '<span class="heart">🤍</span><span>' + sq.text.replace('\n', '<br>') + '</span>';
+          cell.setAttribute('aria-label', 'Free space: Love never stopped');
+        } else {
+          cell.textContent = sq.text;
+          cell.addEventListener('click', () => toggleMark(i));
+        }
+
+        grid.appendChild(cell);
+      });
+
+      updateStats();
+      checkBingo();
+    }
+
+    function toggleMark(i) {
+      if (currentSquares[i].isFree) return;
+      if (marked.has(i)) {
+        marked.delete(i);
+      } else {
+        marked.add(i);
+      }
+      render();
+    }
+
+    function getLines() {
+      const lines = [];
+      for (let r = 0; r < 5; r++) {
+        lines.push([0, 1, 2, 3, 4].map(c => r * 5 + c));
+      }
+      for (let c = 0; c < 5; c++) {
+        lines.push([0, 1, 2, 3, 4].map(r => r * 5 + c));
+      }
+      lines.push([0, 6, 12, 18, 24]);
+      lines.push([4, 8, 12, 16, 20]);
+      return lines;
+    }
+
+    function checkBingo() {
+      const lines = getLines();
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(c => c.classList.remove('bingo-line'));
+
+      let bingoLines = 0;
+      lines.forEach(line => {
+        if (line.every(i => marked.has(i))) {
+          bingoLines++;
+          line.forEach(i => cells[i]?.classList.add('bingo-line'));
+        }
+      });
+
+      document.getElementById('bingoCount').textContent = bingoLines;
+      document.getElementById('winBanner').classList.toggle('visible', bingoLines > 0);
+    }
+
+    function updateStats() {
+      const count = [...marked].filter(i => !currentSquares[i]?.isFree).length;
+      document.getElementById('markedCount').textContent = count;
+    }
+
+    document.getElementById('shuffleBtn').addEventListener('click', generateCard);
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      marked = new Set([12]);
+      render();
+    });
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    generateCard();
+  </script>
+</body>
+</html>

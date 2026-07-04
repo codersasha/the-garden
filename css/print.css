@@ -1,0 +1,10 @@
+/* The Garden — print (ledger / letters) */
+@media print {
+  .app-header, .crisis-footer, .deck-controls, .companion-stage, .bg-glow,
+  .menu, .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  .shell { max-width: 100%; padding: 1.5rem; }
+  .list .item { break-inside: avoid; border-color: #999; }
+  .screen { display: block !important; }
+  .screen:not(.active) { display: none !important; }
+}
