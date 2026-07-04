@@ -173,3 +173,35 @@ textarea { line-height: 1.5; resize: vertical; }
     background: linear-gradient(var(--bg-elev) 70%, transparent);
   }
 }
+
+/* About / onboarding — one soft card at a time (calm, intentional). */
+#aboutList { display: grid; gap: 1.2rem; }
+.about-card {
+  position: relative; background: var(--bg-elev); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 2.1rem 1.6rem; display: grid; gap: 1rem; text-align: left;
+  animation: fadeIn var(--dur-fade) var(--ease-calm);
+}
+.about-card .about-pill {
+  justify-self: start; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--border); border-radius: 999px;
+  padding: 0.25rem 0.75rem; background: var(--bg);
+}
+.about-card h3 { font-size: 1.55rem; line-height: 1.25; }
+.about-card .about-body { color: var(--text); font-size: 1.02rem; line-height: 1.7; }
+.about-card .about-list { list-style: none; display: grid; gap: 0.7rem; }
+.about-card .about-list li {
+  color: var(--text); font-size: 0.98rem; line-height: 1.55;
+  padding-left: 1.1rem; position: relative;
+}
+.about-card .about-list li::before {
+  content: "·"; position: absolute; left: 0.2rem; top: -0.15rem;
+  color: var(--accent); font-size: 1.5rem; line-height: 1;
+}
+.about-card .about-after { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; }
+.about-card .about-close { font-family: var(--font-serif); font-size: 1.35rem; color: var(--accent); line-height: 1.3; margin-top: 0.3rem; }
+.about-nav { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+.about-nav .dots { display: flex; gap: 0.45rem; }
+.about-nav .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); transition: background var(--dur-fade) var(--ease-calm); }
+.about-nav .dot.on { background: var(--accent); }
+.about-nav button { min-width: var(--tap); padding: 0.5rem 1.1rem; }

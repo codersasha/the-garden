@@ -401,25 +401,48 @@
   }
 
   // ---------- about ----------
+  // About / onboarding — one soft card at a time (calm, intentional; plan §20.1).
+  let aboutIdx = 0;
   function openAbout(onboard) {
     show("about-screen");
+    aboutIdx = 0;
+    renderAboutCard(onboard);
+  }
+  function renderAboutCard(onboard) {
     const wrap = $("aboutList"); wrap.innerHTML = "";
     const a = window.GardenContent.about;
-    a.sections.forEach(s => {
-      const sec = el("div", "item");
-      sec.appendChild(el("h3", "serif", s.title));
-      if (s.body) sec.appendChild(el("p", "", esc(s.body)));
-      if (s.list) { const ul = el("ul"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); sec.appendChild(ul); }
-      if (s.after) sec.appendChild(el("p", "muted", esc(s.after)));
-      wrap.appendChild(sec);
-    });
-    wrap.appendChild(el("p", "serif section-title", a.close));
-    if (onboard) {
-      const done = el("div", "card-actions");
-      const b = el("button", "primary", "Begin"); b.type = "button"; b.onclick = () => { show("deck-screen"); renderCurrentCard(); };
-      done.appendChild(b); wrap.appendChild(done);
-    }
-    wrap.appendChild(el("p", "muted small", window.GardenContent.nonAffiliation));
+    const sections = a.sections;
+    const i = aboutIdx;
+    const s = sections[i];
+    const isLast = i === sections.length - 1;
+
+    const card = el("div", "about-card");
+    card.appendChild(el("span", "about-pill", "About &middot; " + (i + 1) + " / " + sections.length));
+    card.appendChild(el("h3", "serif", esc(s.title)));
+    if (s.body) card.appendChild(el("p", "about-body", esc(s.body)));
+    if (s.list) { const ul = el("ul", "about-list"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); card.appendChild(ul); }
+    if (s.after) card.appendChild(el("p", "about-after", esc(s.after)));
+    if (isLast) card.appendChild(el("p", "about-close", esc(a.close)));
+    wrap.appendChild(card);
+
+    const nav = el("div", "about-nav");
+    const back = el("button", "ghost", "\u2190 Back");
+    back.type = "button";
+    if (i === 0) back.style.visibility = "hidden";
+    else back.onclick = () => { aboutIdx--; renderAboutCard(onboard); };
+    const dots = el("div", "dots");
+    sections.forEach((_, di) => dots.appendChild(el("span", "dot" + (di === i ? " on" : ""))));
+    const next = el("button", isLast ? "primary" : "", isLast ? (onboard ? "Begin" : "Done") : "Next \u2192");
+    next.type = "button";
+    next.onclick = () => {
+      if (isLast) { show("deck-screen"); renderCurrentCard(); }
+      else { aboutIdx++; renderAboutCard(onboard); }
+    };
+    nav.appendChild(back); nav.appendChild(dots); nav.appendChild(next);
+    wrap.appendChild(nav);
+
+    if (isLast) wrap.appendChild(el("p", "muted small", window.GardenContent.nonAffiliation));
+    window.scrollTo(0, 0);
   }
 
   // ---------- settings ----------
