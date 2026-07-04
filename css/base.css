@@ -92,12 +92,14 @@ textarea { line-height: 1.5; resize: vertical; }
 }
 
 /* Crisis footer — persistent, never dismissible.
-   Constrained to the app column so it never spans the desktop margins. */
+   Constrained to the app column so it never spans the desktop margins.
+   Taller top fade so scrolling content dissolves into a solid footer bar
+   instead of butting against the button. */
 .crisis-footer {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   max-width: var(--maxw); margin: 0 auto;
-  padding: 0.6rem 1rem calc(var(--safe-bottom) + 0.6rem);
-  background: linear-gradient(transparent, var(--bg-elev) 30%);
+  padding: 1.5rem 1rem calc(var(--safe-bottom) + 0.6rem);
+  background: linear-gradient(transparent, var(--bg-elev) 42%, var(--bg-elev));
 }
 .crisis-footer button {
   width: 100%; background: linear-gradient(135deg, var(--rose), var(--accent-soft));
