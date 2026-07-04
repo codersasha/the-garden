@@ -188,6 +188,10 @@ textarea { line-height: 1.5; resize: vertical; }
   padding: 0.25rem 0.75rem; background: var(--bg);
 }
 .about-card h3 { font-size: 1.55rem; line-height: 1.25; }
+.about-card h3::after {
+  content: ""; display: block; width: 2.4rem; height: 2px; margin-top: 0.7rem;
+  background: var(--accent-soft); border-radius: 2px; opacity: 0.7;
+}
 .about-card .about-body { color: var(--text); font-size: 1.02rem; line-height: 1.7; }
 .about-card .about-list { list-style: none; display: grid; gap: 0.7rem; }
 .about-card .about-list li {
