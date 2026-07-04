@@ -240,6 +240,9 @@
     buildAppChrome();
     show("deck-screen");
     renderCurrentCard();
+    // Re-render the deck whenever the engine advances (snooze / mark-done / next),
+    // so a new card replaces the one that slid away. (plan §4 one-card-at-a-time)
+    Garden.deck.setOnCardChange(renderCurrentCard);
     updatePetals();
     Garden.companions.refresh();
     Garden.notify.scheduleAll(settings);
