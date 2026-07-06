@@ -49,9 +49,9 @@
     C.affirmations.forEach(a => cards.push({ id: "af-" + a.id, type: "affirmation", mode: "Affirm", data: a }));
     // Wisdom — one per wisdom
     C.wisdom.forEach(w => cards.push({ id: "ws-" + w.id, type: "wisdom", mode: "Wisdom", data: w }));
-    // Bingo pulls — sample of squares from both decks
-    [...C.bingoSquares.survivor, ...C.bingoSquares.ledger].forEach((s, i) =>
-      cards.push({ id: "bg-" + i, type: "bingo-pull", mode: "Bingo", data: { text: s } }));
+    // Recognise cards — moments a mum might recognise from her own week
+    [...C.recogniseMoments.survivor, ...C.recogniseMoments.ledger].forEach((s, i) =>
+      cards.push({ id: "rc-" + i, type: "recognise", mode: "Recognise", data: { text: s } }));
     // Small pleasures
     C.smallPleasures.forEach(p => cards.push({ id: "sp-" + p.id, type: "small-pleasure", mode: "Pleasures", data: p }));
     // Grounding links
@@ -140,7 +140,7 @@
     return raw.filter(c => c.mode === mode);
   }
   function allModes() {
-    return ["Log", "Write", "Memory", "Breathe", "BIFF", "Affirm", "Wisdom", "Bingo", "Pleasures", "Grounding"];
+    return ["Log", "Write", "Memory", "Breathe", "BIFF", "Affirm", "Wisdom", "Recognise", "Pleasures", "Grounding"];
   }
 
   function setOnCardChange(fn) { onCardChange = fn; }

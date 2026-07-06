@@ -18,7 +18,7 @@ The app is built on a few beliefs:
 
 ## What it does
 
-- **A calm card deck** — one warm card at a time: log a quiet victory, write a few lines to your child, breathe, draft a BIFF reply, read an affirmation or a piece of group wisdom, pull a bingo square, notice a small pleasure, open a grounding link.
+- **A calm card deck** — one warm card at a time: log a quiet victory, write a few lines to your child, breathe, draft a BIFF reply, read an affirmation or a piece of group wisdom, recognise a moment from your own week, notice a small pleasure, open a grounding link.
 - **The Love Ledger** — a dated timeline of everything you've logged. "On hard days, read it back."
 - **Letters to your child** — a weekly nudge and an established 4-part structure for writing to an alienated child (adapt freely; never send as-is).
 - **BIFF helper** — turn a hostile email into a calm, defensible reply. Optional AI assist (off by default) digests the email and drafts a reply in your chosen style; manual templates always available.
@@ -51,7 +51,7 @@ This audience includes people whose ex-partners have called police and child saf
 /assets           # icons, fonts, companion SVGs, wallpapers, pleasures, audio
 /css              # tokens, base, deck, diary, shop, print
 /js               # app, db, migrations, crypto, deck, cards, ledger, breathe, biff, ai, shop, companions, theme, notify, sw-register
-/js/content       # affirmations, wisdom, victory-presets, bingo-squares, biff-styles, letter-structure, resources, about, small-pleasures, grounding-links, catalogue
+/js/content       # affirmations, wisdom, victory-presets, recognise-moments, biff-styles, letter-structure, resources, about, small-pleasures, grounding-links, catalogue
 /bingo            # original HTML files — kept for memory, unused by the app
 /.cursor/plans    # frozen design artefact (the original implementation plan)
 /docs             # plain-language web pages (privacy, export guide, values)

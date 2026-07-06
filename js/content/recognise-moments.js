@@ -1,7 +1,9 @@
 window.GardenContent = window.GardenContent || {};
 
-// Bingo squares — ported from both existing HTML files (plan §13.4).
-window.GardenContent.bingoSquares = {
+// Recognise moments — short lines a mum may recognise from her own week
+// (the painful patterns of the system, and the quiet acts of love).
+// Seeded from the original solidarity cards (plan §13.4).
+window.GardenContent.recogniseMoments = {
   survivor: [
     "Family report says dad is 'protective' despite your AVO",
     "ICL hasn't met your child yet",

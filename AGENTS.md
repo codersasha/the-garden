@@ -19,7 +19,7 @@ This app is still being built. **There are no real users right now**, so backwar
 Good habits now, mandatory once LIVE:
 
 - **Schema-versioned records + `js/migrations.js`.** Every stored record carries a `schemaVersion`; on load, `migrations.js` runs idempotent upgrade functions to bring old records up to current. In dev you can rewrite migrations freely; once LIVE, only ever *add* new migrations — never rewrite or reorder old ones.
-- **Stable `id`s for content.** Content items (affirmations, wisdom, bingo squares, small pleasures, grounding links, shop catalogue, companions) are keyed by `id`. In dev you can still rename/replace freely; once LIVE, never rename, reuse, or delete an `id` — deprecate instead (and replace a dead grounding link with a new `id`, deprecating the old).
+- **Stable `id`s for content.** Content items (affirmations, wisdom, recognise moments, small pleasures, grounding links, shop catalogue, companions) are keyed by `id`. In dev you can still rename/replace freely; once LIVE, never rename, reuse, or delete an `id` — deprecate instead (and replace a dead grounding link with a new `id`, deprecating the old).
 - **Forward-tolerant settings.** Preserve unknown keys; fill missing keys with defaults. Never assume a key exists.
 - **Versioned exports.** `formatVersion` on export JSON; import must accept older formats and migrate them on the way in.
 

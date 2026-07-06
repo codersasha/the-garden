@@ -159,8 +159,8 @@
       return { front: f, back: b };
     },
 
-    "bingo-pull"(card) {
-      const f = frontWrap(card.data.text, "A square from the bingo decks.");
+    "recognise"(card) {
+      const f = frontWrap(card.data.text, "A moment you might recognise.");
       const b = backWrap();
       b.appendChild(el("div", "face-body", card.data.text));
       const a = actions();
