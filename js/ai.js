@@ -95,13 +95,13 @@
     return complete(BIFF_SYSTEM, user);
   }
 
-  async function helpStartLetter({ childName, memories }) {
+  async function helpStartLetter({ memories }) {
     const LS = window.GardenContent.letterStructure;
     const sys = "You help an Australian parent write a weekly letter to their alienated child, using an established 4-part structure for alienated children. " +
       "Tone guardrails: short, warm, not seeking a reply, neutral life updates, no blame toward the other parent, no interrogating the child, no asking them to reply. " +
       "Never send as-is — always tell the parent to adapt it. Australian English.";
     const parts = LS.parts.map((p, i) => (i + 1) + ". " + p.title + ": " + p.prompt).join("\n");
-    const user = "Write a short, warm letter to " + (childName || "your child") + " following this 4-part structure:\n" + parts +
+    const user = "Write a short, warm letter to your child following this 4-part structure:\n" + parts +
       "\n\nUse these memories/facts if provided (only with consent):\n" + (memories || "(none provided — keep it general)") +
       "\n\nReturn only the letter, signed 'All my love, always.'";
     return complete(sys, user);

@@ -65,8 +65,7 @@
     },
 
     "letter-nudge"(card) {
-      const child = Garden.app.childName() || "your child";
-      const f = frontWrap("A few lines for " + child, "Write a few lines for when they're ready. Weekly keeps the thread alive.");
+      const f = frontWrap("A few lines for your child", "Write a few lines for when they're ready. Weekly keeps the thread alive.");
       const b = backWrap();
       const LS = C.letterStructure;
       b.appendChild(el("div", "muted", LS.cadence));
@@ -89,8 +88,7 @@
     },
 
     "memory"(card) {
-      const child = Garden.app.childName() || "your child";
-      const f = frontWrap("Something only you would know about " + child + " today", "A small memory, kept and dated.");
+      const f = frontWrap("Something only you would know about your child today", "A small memory, kept and dated.");
       const b = backWrap();
       const t = el("textarea"); t.placeholder = "A detail only a mum would know…"; t.rows = 4;
       const a = actions();

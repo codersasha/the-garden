@@ -8,7 +8,7 @@
   let settings = {
     pinHash: null, pinSalt: null, pinWeak: false, stealth: true,
     palette: "dusk-plum", wallpaper: "wallpaper-plain", companion: null, companionMode: "on",
-    themeMode: "dark", childName: "", soundscape: { enabled: false, volume: 0.5 },
+    themeMode: "dark", soundscape: { enabled: false, volume: 0.5 },
     notifications: { morning: "07:30", morningOn: false, evening: "20:30", eveningOn: false,
       weekly: "09:00", weeklyDay: 0, weeklyOn: false, on: false },
     onboarded: false
@@ -55,7 +55,6 @@
 
   // ---------- settings ----------
   function getSettings() { return settings; }
-  function childName() { return settings.childName || ""; }
   function isOnCover() { return $("diary-cover").classList.contains("active"); }
 
   async function saveSettings(next) {
@@ -163,7 +162,6 @@
     cover.appendChild(el("div", "cover-title", "The Garden"));
     cover.appendChild(el("div", "cover-sub", "A quiet companion"));
     cover.appendChild(el("div", "cover-keyhole", "✦"));
-    if (settings.childName) cover.appendChild(el("div", "cover-watermark", "for " + settings.childName));
   }
 
   function showSetupPin() {
@@ -462,14 +460,6 @@
     const wrap = $("settingsList"); wrap.innerHTML = "";
     wrap.appendChild(el("h2", "serif section-title", "Settings"));
 
-    // Child name
-    wrap.appendChild(el("h3", "serif", "Your child"));
-    const cn = el("input"); cn.type = "text"; cn.value = settings.childName || ""; cn.placeholder = "Your child's name (optional)";
-    const cnSave = el("button", "primary", "Save"); cnSave.type = "button";
-    cnSave.onclick = async () => { await saveSettings({ childName: cn.value.trim() }); toast("Saved."); renderCover(); };
-    const cnRow = el("div", "row"); cnRow.appendChild(cn); cnRow.appendChild(cnSave);
-    wrap.appendChild(cnRow);
-
     // Theme
     wrap.appendChild(el("h3", "serif", "Theme"));
     const palRow = el("div", "tag-row");
@@ -513,7 +503,7 @@
     const notNote = el("p", "muted", "Off by default. Calm, local, never naggy. Respect Do Not Disturb.");
     wrap.appendChild(notNote);
     ["morning", "evening", "weekly"].forEach(kind => {
-      const row = el("div", "row");
+      const row = el("div", "anchor-row");
       const cb = el("input"); cb.type = "checkbox"; cb.checked = !!settings.notifications[kind + "On"];
       const lab = el("label");
       lab.appendChild(cb);
@@ -594,7 +584,7 @@
     show("letter-screen");
     const wrap = $("letterList"); wrap.innerHTML = "";
     const LS = window.GardenContent.letterStructure;
-    wrap.appendChild(el("h2", "serif section-title", "A few lines to " + (settings.childName || "your child")));
+    wrap.appendChild(el("h2", "serif section-title", "A few lines to your child"));
     wrap.appendChild(el("p", "muted", LS.cadence));
     LS.parts.forEach(p => {
       const block = el("div", "item");
@@ -602,7 +592,7 @@
       block.appendChild(el("p", "muted", p.prompt));
       wrap.appendChild(block);
     });
-    const ta = el("textarea"); ta.rows = 10; ta.placeholder = "Write here…"; ta.value = LS.example.replace(/\[Child\]/g, settings.childName || "[child]");
+    const ta = el("textarea"); ta.rows = 10; ta.placeholder = "Write here…"; ta.value = LS.example.replace(/\[Child\]/g, "My love");
     wrap.appendChild(ta);
     const a = el("div", "card-actions");
     const ai = el("button", "ghost", "Help me start (AI)"); ai.type = "button";
@@ -610,8 +600,8 @@
       ai.disabled = true; ai.textContent = "Thinking…";
       try {
         const memories = await Garden.ledger.listMemories();
-        const memText = settings.childName ? memories.slice(-5).map(m => m.body).join("\n") : "";
-        const draft = await Garden.ai.helpStartLetter({ childName: settings.childName, memories: memText });
+        const memText = memories.slice(-5).map(m => m.body).join("\n");
+        const draft = await Garden.ai.helpStartLetter({ memories: memText });
         ta.value = draft;
       } catch (e) { toast("AI unavailable. Use the scaffold above."); }
       ai.disabled = false; ai.textContent = "Help me start (AI)";
@@ -771,7 +761,7 @@
   // ---------- public API ----------
   window.Garden.app = {
     bootstrap, show, toast, banner, softTone,
-    settings: getSettings, saveSettings, childName, isOnCover,
+    settings: getSettings, saveSettings, isOnCover,
     addPetals, markDone, snooze, restoreAll, openToFirstCard,
     openLetter, openBiff, openSettings, openAbout,
     refreshLedgerIfOpen, applyWallpaper,

@@ -68,7 +68,7 @@ textarea { line-height: 1.5; resize: vertical; }
 
 .shell {
   max-width: var(--maxw); margin: 0 auto;
-  padding: calc(var(--safe-top) + 1rem) 1.1rem calc(var(--safe-bottom) + 6.5rem);
+  padding: calc(var(--safe-top) + 1rem) 1.4rem calc(var(--safe-bottom) + 7.5rem);
   position: relative; z-index: 1;
 }
 
@@ -76,7 +76,7 @@ textarea { line-height: 1.5; resize: vertical; }
 .app-header {
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; gap: 0.5rem;
-  padding: calc(var(--safe-top) + 0.4rem) 1.1rem 0.4rem;
+  padding: calc(var(--safe-top) + 0.4rem) 1.4rem 0.4rem;
   background: linear-gradient(var(--bg) 60%, transparent);
   max-width: var(--maxw); margin: 0 auto;
 }
@@ -98,7 +98,7 @@ textarea { line-height: 1.5; resize: vertical; }
 .crisis-footer {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   max-width: var(--maxw); margin: 0 auto;
-  padding: 0.7rem 1rem calc(var(--safe-bottom) + 0.6rem);
+  padding: 0.7rem 1.4rem calc(var(--safe-bottom) + 0.6rem);
   background: var(--bg-elev);
   border-top: 1px solid var(--border);
 }
@@ -147,6 +147,37 @@ textarea { line-height: 1.5; resize: vertical; }
 .row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
 .row > * { flex: 1; }
 .spacer { height: 1rem; }
+
+/* Settings — clear section rhythm, breathable rows, no edge crowding. */
+#settingsList { padding-top: 0.4rem; }
+#settingsList h2.section-title { margin: 0 0 0.4rem; }
+#settingsList h3.serif {
+  font-size: 1.1rem; color: var(--accent);
+  margin: 1.8rem 0 0.7rem;
+}
+#settingsList h3.serif:first-of-type { margin-top: 0.2rem; }
+#settingsList .muted { font-size: 0.88rem; line-height: 1.5; margin: 0 0 0.8rem; }
+#settingsList .tag-row { justify-content: flex-start; }
+#settingsList input[type="text"],
+#settingsList input[type="password"],
+#settingsList input[type="time"],
+#settingsList select { width: 100%; }
+
+/* Daily-anchor rows: label on its own line, controls below — tappable, not crowded. */
+.anchor-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.5rem 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+.anchor-row label {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.95rem;
+}
+.anchor-row input[type="time"],
+.anchor-row select { min-height: var(--tap); }
 
 /* Laptop / desktop — present as a calm, centered companion column.
    The app keeps its intimate mobile scale (plan §12.2); the wide dark

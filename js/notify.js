@@ -28,7 +28,7 @@
     if (n.morning && n.morningOn) scheduleAt(n.morningTime, "A new card is waiting in the garden.", () => Garden.app.openToFirstCard());
     if (n.evening && n.eveningOn) scheduleAt(n.eveningTime, "Log one quiet victory today.", () => Garden.app.openToFirstCard());
     if (n.weekly && n.weeklyOn) scheduleWeekly(n.weeklyDay, n.weeklyTime,
-      "It's " + dayName(n.weeklyDay) + " — a few lines to " + (Garden.app.childName() || "your child") + " keep the thread active.",
+      "It's " + dayName(n.weeklyDay) + " — a few lines to your child keep the thread active.",
       () => Garden.app.openLetter({ anchor: true }));
   }
 

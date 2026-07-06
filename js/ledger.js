@@ -39,7 +39,7 @@
   async function saveLetter(body) {
     const db = Garden.db;
     const rec = { id: db.uid(), date: new Date().toISOString(), schemaVersion: db.SCHEMA_VERSION,
-      childName: Garden.app.childName(), body, sealed: true };
+      body, sealed: true };
     await db.put("letters", rec);
     Garden.app.addPetals(10);
     Garden.app.toast("Saved to the love ledger.");
