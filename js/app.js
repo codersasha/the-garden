@@ -714,7 +714,39 @@
         const g = ctx.createGain(); g.gain.value = 0.04; src.connect(f); f.connect(g); g.connect(master);
         src.start();
       }, 1200);
-      soundscapeNodes = { master, chordTimer, crackleTimer };
+      // soft lo-fi beat — gentle kick + brushed hat for a touch of pulse (~78 BPM)
+      function playKick() {
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator(); o.type = "sine";
+        o.frequency.setValueAtTime(125, t);
+        o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+        const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.4, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.24);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.28);
+      }
+      function playHat() {
+        const t = ctx.currentTime;
+        const len = 0.05;
+        const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * len), ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        const src = ctx.createBufferSource(); src.buffer = buf;
+        const f = ctx.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 6500;
+        const g = ctx.createGain(); g.gain.setValueAtTime(0.06, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+        src.connect(f); f.connect(g); g.connect(master);
+        src.start(t); src.stop(t + len + 0.02);
+      }
+      let beatStep = 0;
+      const beatTimer = setInterval(() => {
+        if (document.hidden) return;
+        const step = beatStep % 4;
+        if (step === 0 || step === 2) playKick();
+        if (step === 1 || step === 3) playHat();
+        beatStep++;
+      }, 770);
+      soundscapeNodes = { master, chordTimer, crackleTimer, beatTimer };
       document.addEventListener("visibilitychange", visHandler);
     } catch (e) { console.warn("soundscape failed", e); }
   }
@@ -726,7 +758,7 @@
   }
   function stopSoundscape() {
     if (!soundscapeNodes) return;
-    clearInterval(soundscapeNodes.chordTimer); clearInterval(soundscapeNodes.crackleTimer);
+    clearInterval(soundscapeNodes.chordTimer); clearInterval(soundscapeNodes.crackleTimer); clearInterval(soundscapeNodes.beatTimer);
     try { const ctx = audioCtx; soundscapeNodes.master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1); } catch (e) {}
     document.removeEventListener("visibilitychange", visHandler);
     soundscapeNodes = null;
