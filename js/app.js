@@ -350,7 +350,7 @@
     header.appendChild(el("button", "icon-btn", "☰"));
     header.querySelector(".icon-btn").onclick = openMenu;
     header.appendChild(el("div", "brand", "The Garden"));
-    const sc = el("button", "icon-btn soundscape-toggle", settings.soundscape && settings.soundscape.enabled ? "🔊" : "♪");
+    const sc = el("button", "icon-btn soundscape-toggle", settings.soundscape && settings.soundscape.enabled ? "🔊" : "🔇");
     sc.onclick = toggleSoundscape;
     sc.id = "scToggle";
     header.appendChild(sc);
@@ -748,18 +748,18 @@
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
   }
-  function toggleSoundscape() {
+  async function toggleSoundscape() {
     const next = { ...settings.soundscape, enabled: !settings.soundscape.enabled };
-    saveSettings({ soundscape: next });
+    await saveSettings({ soundscape: next });
     if (next.enabled) startSoundscape(); else stopSoundscape();
     buildAppChrome();
   }
-  function startSoundscape() {
+  async function startSoundscape() {
     try {
-      const ctx = ensureAudio(); if (ctx.state === "suspended") ctx.resume();
+      const ctx = ensureAudio(); if (ctx.state === "suspended") await ctx.resume();
       stopSoundscape();
       const master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-      master.gain.linearRampToValueAtTime((settings.soundscape.volume || 0.5) * 0.18, ctx.currentTime + 2);
+      master.gain.linearRampToValueAtTime((settings.soundscape.volume || 0.5) * 0.42, ctx.currentTime + 2);
       // warm lowpass on the whole bus — softens any harshness into a cushion
       const warm = ctx.createBiquadFilter(); warm.type = "lowpass"; warm.frequency.value = 1400; warm.Q.value = 0.4;
       warm.connect(master);
@@ -838,7 +838,7 @@
     if (!soundscapeNodes) return;
     const ctx = audioCtx;
     if (document.hidden) soundscapeNodes.master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-    else soundscapeNodes.master.gain.linearRampToValueAtTime((settings.soundscape.volume || 0.5) * 0.18, ctx.currentTime + 1);
+    else soundscapeNodes.master.gain.linearRampToValueAtTime((settings.soundscape.volume || 0.5) * 0.42, ctx.currentTime + 1);
   }
   function stopSoundscape() {
     if (!soundscapeNodes) return;
