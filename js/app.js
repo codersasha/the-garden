@@ -144,6 +144,40 @@
     petalTimer = setInterval(() => { if (Math.random() < 0.5) spawn(); }, 3200);
   }
 
+  // Tap bloom — a few soft petals/sparkles drift out from a tap on calm space.
+  // Skips interactive elements, the crisis footer, modals, and locked screens.
+  // Respects reduced-motion. (plan §12.1 calm motion)
+  let tapBloomBound = false;
+  const TAP_GLYPHS = ["🌸", "🌷", "🤍", "🌼", "✨", "🌿", "🫧"];
+  function startTapBloom() {
+    if (tapBloomBound) return;
+    tapBloomBound = true;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.addEventListener("click", (e) => {
+      if (!unlocked) return;
+      const t = e.target;
+      if (!t || !t.closest) return;
+      if (t.closest("button, a, input, textarea, select, [role=\"button\"]")) return;
+      if (t.closest(".crisis-footer, .modal")) return;
+      const x = e.clientX, y = e.clientY;
+      const n = 2 + Math.floor(Math.random() * 3); // 2-4
+      for (let i = 0; i < n; i++) {
+        const b = document.createElement("span");
+        b.className = "tap-bloom";
+        b.textContent = TAP_GLYPHS[Math.floor(Math.random() * TAP_GLYPHS.length)];
+        b.style.left = (x + (Math.random() * 16 - 8)) + "px";
+        b.style.top = (y + (Math.random() * 16 - 8)) + "px";
+        b.style.setProperty("--dx", (Math.random() * 40 - 20) + "px");
+        b.style.setProperty("--dy", (Math.random() * 36 - 22) + "px");
+        b.style.setProperty("--rot", (Math.random() * 80 - 40) + "deg");
+        b.style.fontSize = (0.9 + Math.random() * 0.5) + "rem";
+        b.style.animationDuration = (1.0 + Math.random() * 0.4) + "s";
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 1500);
+      }
+    });
+  }
+
   // ---------- PIN / diary ----------
   let pinEntry = "";
 
@@ -291,6 +325,7 @@
     Garden.notify.scheduleAll(settings);
     startSparkles();
     startPetals();
+    startTapBloom();
     maybeBackupReminder();
     if (!settings.onboarded) {
       await saveSettings({ onboarded: true });

@@ -323,3 +323,18 @@ textarea { line-height: 1.5; resize: vertical; }
   100% { opacity: 0; transform: scale(0.5) translateY(-26px); }
 }
 @media (prefers-reduced-motion: reduce) { .sparkle { display: none; } }
+
+/* Tap bloom — soft petals/sparkles drift out from a tap on calm space.
+   One shared keyframe; --dx/--dy/--rot set inline per element so each
+   drifts in a different direction. Never on reduced-motion. */
+.tap-bloom {
+  position: fixed; z-index: 30; pointer-events: none;
+  opacity: 0; will-change: transform, opacity;
+  animation: tapBloom 1.2s var(--ease-calm) forwards;
+}
+@keyframes tapBloom {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  20%  { opacity: 0.85; transform: translate(-50%, -50%) scale(1) rotate(calc(var(--rot, 0deg) * 0.3)); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0.85) rotate(var(--rot, 0deg)); }
+}
+@media (prefers-reduced-motion: reduce) { .tap-bloom { display: none; } }
