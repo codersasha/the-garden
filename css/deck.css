@@ -1,7 +1,7 @@
 /* The Garden — deck, flip cards, swipe, breathe, petal sparkle */
 
 #deck { display: grid; gap: 1rem; }
-#cardHolder { display: grid; gap: 0.6rem; }
+#cardHolder { display: grid; gap: 0.35rem; }
 
 .card {
   position: relative; background: var(--bg-elev); border: 1px solid var(--border);
@@ -57,21 +57,22 @@
   transform-origin: top center;
   opacity: 0.5;
   box-shadow: none;
-  margin-top: -2.4rem;
+  margin-top: 0.35rem;
   pointer-events: none;
   animation: none;
 }
 .card.peek + .card.peek {
   opacity: 0.32;
-  margin-top: -3rem;
+  margin-top: 0.35rem;
   transform: scale(0.86);
 }
-.card.peek .card-inner { min-height: 10rem; }
+.card.peek .card-inner { min-height: 5rem; }
+.card.peek + .card.peek .card-inner { min-height: 3.5rem; }
 .card.peek .swipe-hint,
 .card.peek .mode-pill { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .card.peek { transform: none; margin-top: 0.4rem; }
-  .card.peek + .card.peek { transform: none; margin-top: 0.4rem; }
+  .card.peek { transform: none; margin-top: 0.35rem; }
+  .card.peek + .card.peek { transform: none; margin-top: 0.35rem; }
 }
 
 /* Deck controls (bottom-anchored, thumb zone) */

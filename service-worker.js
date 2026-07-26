@@ -1,5 +1,5 @@
 // The Garden — service worker. Precaches the app shell. Does NOT precache Puter.js (plan §11).
-const CACHE = "garden-v18";
+const CACHE = "garden-v19";
 const SHELL = [
   "./",
   "./index.html",
