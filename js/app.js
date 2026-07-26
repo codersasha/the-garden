@@ -121,6 +121,29 @@
     sparkleTimer = setInterval(() => { if (Math.random() < 0.6) spawn(); }, 2600);
   }
 
+  // Floating petals on the About screen — gentle upward drift.
+  // Respects reduced-motion. (plan §12.1 calm motion)
+  let petalTimer = null;
+  const PETAL_GLYPHS = ["🌸", "🌷", "🤍", "✨", "🌿", "🍂"];
+  function startPetals() {
+    if (petalTimer) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const spawn = () => {
+      const screen = document.querySelector(".screen.active");
+      if (!screen || screen.id !== "about-screen") return;
+      const p = document.createElement("span");
+      p.className = "about-petal";
+      p.textContent = PETAL_GLYPHS[Math.floor(Math.random() * PETAL_GLYPHS.length)];
+      p.style.left = (5 + Math.random() * 90) + "vw";
+      p.style.bottom = "-2rem";
+      p.style.animationDuration = (11 + Math.random() * 7) + "s";
+      p.style.fontSize = (0.9 + Math.random() * 0.6) + "rem";
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 19000);
+    };
+    petalTimer = setInterval(() => { if (Math.random() < 0.5) spawn(); }, 3200);
+  }
+
   // ---------- PIN / diary ----------
   let pinEntry = "";
 
@@ -267,6 +290,7 @@
     Garden.companions.refresh();
     Garden.notify.scheduleAll(settings);
     startSparkles();
+    startPetals();
     maybeBackupReminder();
     if (!settings.onboarded) {
       await saveSettings({ onboarded: true });
@@ -436,18 +460,33 @@
       const card = el("div", "about-card");
       // Each card gets its own soft hue (plan §20.1 calm, varied garden).
       card.style.setProperty("--card-hue", String(260 + i * 36));
-      card.appendChild(el("h3", "serif", esc(s.title)));
-      if (s.body) card.appendChild(el("p", "about-body", esc(s.body)));
-      if (s.list) { const ul = el("ul", "about-list"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); card.appendChild(ul); }
-      if (s.after) card.appendChild(el("p", "about-after", esc(s.after)));
+      const inner = el("div", "about-card-inner");
+      // Front face — icon + heading only; tap to flip.
+      const front = el("div", "about-card-face about-card-front");
+      front.appendChild(el("div", "about-icon", s.icon || "✦"));
+      front.appendChild(el("h3", "serif", esc(s.title)));
+      front.appendChild(el("div", "about-flip-hint", "tap to read"));
+      inner.appendChild(front);
+      // Back face — the body, list, after, and (last card) close + actions.
+      const back = el("div", "about-card-face about-card-back");
+      if (s.body) back.appendChild(el("p", "about-body", esc(s.body)));
+      if (s.list) { const ul = el("ul", "about-list"); s.list.forEach(li => { const l = el("li"); l.textContent = li; ul.appendChild(l); }); back.appendChild(ul); }
+      if (s.after) back.appendChild(el("p", "about-after", esc(s.after)));
       if (isLast) {
-        card.appendChild(el("p", "about-close", esc(a.close)));
+        back.appendChild(el("p", "about-close", esc(a.close)));
         const actions = el("div", "about-actions");
         const begin = el("button", "primary", onboard ? "Begin" : "Done"); begin.type = "button";
         begin.onclick = () => { show("deck-screen"); renderCurrentCard(); };
         actions.appendChild(begin);
-        card.appendChild(actions);
+        back.appendChild(actions);
       }
+      inner.appendChild(back);
+      card.appendChild(inner);
+      // Flip on whole-card tap (but not on interactive elements).
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("button, textarea, input, select, a")) return;
+        card.classList.toggle("flipped");
+      });
       wrap.appendChild(card);
     });
     wrap.appendChild(el("p", "muted small", window.GardenContent.nonAffiliation));
