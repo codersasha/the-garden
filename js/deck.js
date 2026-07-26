@@ -93,6 +93,22 @@
 
   function current() { return currentCard; }
 
+  // Peek at up to n upcoming cards (not snoozed/done) without advancing.
+  // Used only for visual preview of what's below the current card.
+  function peek(n) {
+    if (!deck.length) reshuffle();
+    const out = [];
+    for (let i = 0; i < deck.length && out.length < n; i++) {
+      const idx = (cursor + i) % deck.length;
+      const c = deck[idx];
+      if (c.id !== (currentCard && currentCard.id) &&
+          !state.snoozedIds.includes(c.id) && !state.doneToday.includes(c.id)) {
+        out.push(c);
+      }
+    }
+    return out;
+  }
+
   function next() {
     if (!deck.length) reshuffle();
     // find next non-snoozed/non-done from cursor
@@ -161,7 +177,7 @@
   }
 
   window.Garden.deck = {
-    loadState, saveState, reshuffle, next, current, snoozeCurrent, markDone, restoreAll,
+    loadState, saveState, reshuffle, next, current, peek, snoozeCurrent, markDone, restoreAll,
     browseByMode, allModes, setOnCardChange, applyMood, partOfDay
   };
 })();

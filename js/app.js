@@ -92,11 +92,28 @@
     if (!card) { Garden.deck.next(); return renderCurrentCard(); }
     const node = Garden.cards.render(card);
     holder.appendChild(node);
+    // Peek cards — faded, non-interactive hints of what's waiting below.
+    // Visual only; they invite a gentle scroll without being tappable/flippable.
+    const peeks = Garden.deck.peek(2);
+    peeks.forEach(p => {
+      const pn = Garden.cards.render(p);
+      pn.classList.add("peek");
+      pn.setAttribute("aria-hidden", "true");
+      pn.tabIndex = -1;
+      pn.style.cursor = "default";
+      holder.appendChild(pn);
+    });
     updateDeckControls();
   }
   function updateDeckControls() {
     const c = $("deckControls");
-    if (c) c.innerHTML = "";
+    if (!c) return;
+    c.innerHTML = "";
+    const b = el("button", "");
+    b.type = "button";
+    b.textContent = "Bring them all back";
+    b.onclick = () => Garden.app.restoreAll();
+    c.appendChild(b);
   }
 
   // Idle sparkles — gentle, occasional, only on calm screens (about + deck).

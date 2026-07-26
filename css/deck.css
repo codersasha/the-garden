@@ -1,11 +1,12 @@
 /* The Garden — deck, flip cards, swipe, breathe, petal sparkle */
 
 #deck { display: grid; gap: 1rem; }
+#cardHolder { display: grid; gap: 0.6rem; }
 
 .card {
   position: relative; background: var(--bg-elev); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow);
-  min-height: 18rem; display: grid; place-items: center; padding: 1.5rem;
+  display: block; padding: 1.5rem;
   perspective: 1200px; overflow: hidden;
   animation: breathe 6s ease-in-out infinite alternate;
 }
@@ -47,6 +48,31 @@
 .card.swiping { transition: none; }
 .card.gone { animation: gone var(--dur-fade) var(--ease-calm) forwards; }
 @keyframes gone { to { opacity: 0; transform: translateX(-110%); } }
+
+/* Peek cards — faded, scaled-down hints of what's waiting below the
+   current card. Non-interactive: pointer-events disabled, removed from
+   tab order, hidden from AT. They invite a gentle scroll, not a tap. */
+.card.peek {
+  transform: scale(0.94);
+  transform-origin: top center;
+  opacity: 0.5;
+  box-shadow: none;
+  margin-top: -2.4rem;
+  pointer-events: none;
+  animation: none;
+}
+.card.peek + .card.peek {
+  opacity: 0.32;
+  margin-top: -3rem;
+  transform: scale(0.86);
+}
+.card.peek .card-inner { min-height: 10rem; }
+.card.peek .swipe-hint,
+.card.peek .mode-pill { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .card.peek { transform: none; margin-top: 0.4rem; }
+  .card.peek + .card.peek { transform: none; margin-top: 0.4rem; }
+}
 
 /* Deck controls (bottom-anchored, thumb zone) */
 .deck-controls {
