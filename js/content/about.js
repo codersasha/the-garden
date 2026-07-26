@@ -14,7 +14,7 @@ window.GardenContent.about = {
     { id: "healing", icon: "🌿", title: "Healing is part of staying in the fight",
       body: "You can't pour from an empty cup. The gentle reminders here — to breathe, to eat, to move, to sit in nature — are how you stay standing." },
     { id: "solidarity", icon: "🕯️", title: "Solidarity is survival",
-      body: "You are not alone. The wisdom here comes from mums who've lived it and from established family-separation practice." },
+      body: "You are not alone. The wisdom here comes from mums who've lived it and from established family-separation practice — peer support isn't a luxury in this, it's how you stay standing." },
     { id: "treats-you", icon: "🔒", title: "How this app treats you",
       list: [
         "No shame. No streaks to break. The ledger only grows.",
@@ -34,7 +34,7 @@ window.GardenContent.about = {
       ],
       after: "The persistent Help link at the bottom of every screen is always one tap away." },
     { id: "letters", icon: "✉️", title: "A note on the letters and replies",
-      body: "The app can help draft a calm BIFF reply to a hostile email, and a weekly letter to your child. These are aids, not authorities. Adapt everything to your own voice. You are the author; the app just holds some of the load." }
+      body: "The app can help draft a calm BIFF reply to a hostile email, and a weekly letter to your child. These are aids, not authorities — and never legal advice. Adapt everything to your own voice. The letters carry one firm rule throughout: no blame toward the other parent, no interrogating the child, no asking them to reply. You are the author; the app just holds some of the load." }
   ],
   close: "You are not the villain in this story."
 };
