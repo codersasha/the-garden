@@ -725,23 +725,32 @@
       stopSoundscape();
       const master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
       master.gain.linearRampToValueAtTime((settings.soundscape.volume || 0.5) * 0.18, ctx.currentTime + 2);
-      // soft pad — slow chord cycle on minor 7th
-      const pad = ctx.createGain(); pad.gain.value = 0.5; pad.connect(master);
-      const chords = [[220, 261.6, 329.6], [196, 246.9, 311.1], [174.6, 220, 261.6]];
+      // warm lowpass on the whole bus — softens any harshness into a cushion
+      const warm = ctx.createBiquadFilter(); warm.type = "lowpass"; warm.frequency.value = 1400; warm.Q.value = 0.4;
+      warm.connect(master);
+      // soft pad — slow cycle through warm major-7th chords (Cmaj7, Fmaj7, Am7, G6).
+      // Higher register + major tonality = calm, never ominous.
+      const pad = ctx.createGain(); pad.gain.value = 0.5; pad.connect(warm);
+      const chords = [
+        [261.6, 329.6, 392.0, 493.9],   // Cmaj7
+        [349.2, 440.0, 523.3, 659.3],   // Fmaj7
+        [220.0, 261.6, 329.6, 392.0],   // Am7 (wistful, not dark)
+        [196.0, 246.9, 293.7, 329.6]    // G6 (open, floating)
+      ];
       let ci = 0;
       const oscs = [];
       function playChord() {
         oscs.forEach(o => o.stop()); oscs.length = 0;
         chords[ci].forEach(freq => {
-          const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = freq;
+          const o = ctx.createOscillator(); o.type = "triangle"; o.frequency.value = freq;
           const g = ctx.createGain(); g.gain.value = 0; o.connect(g); g.connect(pad);
-          g.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 2);
-          o.start(); oscs.push(o); oscs.push({ stop: () => { try { g.gain.linearRampToValueAtTime(0, ctx.currentTime + 2); o.stop(ctx.currentTime + 2.2); } catch (e) {} } });
+          g.gain.linearRampToValueAtTime(0.13, ctx.currentTime + 3);
+          o.start(); oscs.push(o); oscs.push({ stop: () => { try { g.gain.linearRampToValueAtTime(0, ctx.currentTime + 2.5); o.stop(ctx.currentTime + 2.7); } catch (e) {} } });
         });
         ci = (ci + 1) % chords.length;
       }
       playChord();
-      const chordTimer = setInterval(playChord, 8000);
+      const chordTimer = setInterval(playChord, 10000);
       // gentle vinyl crackle (filtered noise bursts)
       const crackleTimer = setInterval(() => {
         if (document.hidden) return;
@@ -753,26 +762,27 @@
         const g = ctx.createGain(); g.gain.value = 0.04; src.connect(f); f.connect(g); g.connect(master);
         src.start();
       }, 1200);
-      // soft lo-fi beat — gentle kick + brushed hat for a touch of pulse (~78 BPM)
+      // soft heartbeat — one gentle kick on beat 1, one brushed tap on beat 3 (~68 BPM).
+      // Pitch stays high and round (no sub-bass drop) so it reads as a pulse, not a threat.
       function playKick() {
         const t = ctx.currentTime;
         const o = ctx.createOscillator(); o.type = "sine";
-        o.frequency.setValueAtTime(125, t);
-        o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+        o.frequency.setValueAtTime(95, t);
+        o.frequency.exponentialRampToValueAtTime(72, t + 0.10);
         const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.4, t + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.24);
-        o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.28);
+        g.gain.exponentialRampToValueAtTime(0.22, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.20);
+        o.connect(g); g.connect(warm); o.start(t); o.stop(t + 0.24);
       }
-      function playHat() {
+      function playTap() {
         const t = ctx.currentTime;
-        const len = 0.05;
+        const len = 0.04;
         const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * len), ctx.sampleRate);
         const d = buf.getChannelData(0);
         for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
         const src = ctx.createBufferSource(); src.buffer = buf;
-        const f = ctx.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 6500;
-        const g = ctx.createGain(); g.gain.setValueAtTime(0.06, t);
+        const f = ctx.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 7000;
+        const g = ctx.createGain(); g.gain.setValueAtTime(0.035, t);
         g.gain.exponentialRampToValueAtTime(0.0001, t + len);
         src.connect(f); f.connect(g); g.connect(master);
         src.start(t); src.stop(t + len + 0.02);
@@ -781,10 +791,10 @@
       const beatTimer = setInterval(() => {
         if (document.hidden) return;
         const step = beatStep % 4;
-        if (step === 0 || step === 2) playKick();
-        if (step === 1 || step === 3) playHat();
+        if (step === 0) playKick();
+        if (step === 2) playTap();
         beatStep++;
-      }, 770);
+      }, 880);
       soundscapeNodes = { master, chordTimer, crackleTimer, beatTimer };
       document.addEventListener("visibilitychange", visHandler);
     } catch (e) { console.warn("soundscape failed", e); }
